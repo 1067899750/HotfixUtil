@@ -58,8 +58,20 @@ public class EnjoyFix {
         return hackFile;
     }
 
+    /**
+     * 1、获取程序的PathClassLoader对象
+     * 2、反射获得PathClassLoader父类BaseDexClassLoader的pathList对象
+     * 3、反射获取pathList的dexElements对象 （oldElement）
+     * 4、把补丁包变成Element数组：patchElement（反射执行makePathElements）
+     * 5、合并patchElement+oldElement = newElement （Array.newInstance）
+     * 6、反射把oldElement赋值成newElement
+     *
+     * @param application
+     * @param patch
+     */
     public static void installPatch(Application application, File patch) {
         File hackFile = initHack(application);
+        //1、获取程序的PathClassLoader对象
         ClassLoader classLoader = application.getClassLoader();
         List<File> files = new ArrayList<>();
         if (patch.exists()) {
@@ -105,8 +117,7 @@ public class EnjoyFix {
             // 从 pathList找到 makePathElements 方法并执行
             // 得到补丁创建的 Element[]
             Object[] objects = makePathElements(dexPathList,
-                    new ArrayList<>(additionalClassPathEntries), optimizedDirectory,
-                    suppressedExceptions);
+                    new ArrayList<>(additionalClassPathEntries), optimizedDirectory, suppressedExceptions);
 
             //将原本的 dexElements 与 makePathElements生成的数组合并
             ShareReflectUtil.expandFieldArray(dexPathList, "dexElements", objects);
@@ -142,9 +153,12 @@ public class EnjoyFix {
                 throws IllegalArgumentException, IllegalAccessException,
                 NoSuchFieldException, InvocationTargetException, NoSuchMethodException,
                 IOException {
+            //2、反射获得PathClassLoader父类BaseDexClassLoader的pathList对象
             Field pathListField = ShareReflectUtil.findField(loader, "pathList");
             Object dexPathList = pathListField.get(loader);
             ArrayList<IOException> suppressedExceptions = new ArrayList<IOException>();
+            //2、反射获得PathClassLoader父类BaseDexClassLoader的pathList对象
+            //4、把补丁包变成Element数组：patchElement（反射执行makePathElements）
             ShareReflectUtil.expandFieldArray(dexPathList, "dexElements",
                     makeDexElements(dexPathList,
                             new ArrayList<File>(additionalClassPathEntries), optimizedDirectory,
