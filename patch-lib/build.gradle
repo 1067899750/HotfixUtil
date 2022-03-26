@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
 }
 
 // 定义变量，同学们注意：可以定义变量，也可以不定义变量
@@ -11,29 +11,19 @@ android {
     buildToolsVersion app_android.buildToolsVersion
 
     defaultConfig {
-        applicationId app_android.applicationId
         minSdkVersion app_android.minSdkVersion
         targetSdkVersion app_android.targetSdkVersion
         versionCode app_version.versionCode
         versionName app_version.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
         release {
-            /*打开混淆*/
-            minifyEnabled true
-            /*打开资源压缩*/
-            shrinkResources true
-            zipAlignEnabled true // Zipalign优化
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        debug{
-            /*打开混淆*/
-            minifyEnabled true
-            /*打开资源压缩*/
-            shrinkResources true
         }
     }
     compileOptions {
@@ -50,7 +40,4 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    
-    implementation project(path: ':patch-lib')
-
 }

@@ -1,2 +1,4 @@
+include ':patch-hack'
+include ':patch-lib'
 include ':app'
 rootProject.name = "HotfixUtil"
