@@ -1,0 +1,20 @@
+ext {
+    android = [
+            compileSdkVersion: 30,
+            buildToolsVersion: "30.0.3",
+            applicationId    : "com.example.hotfixutil",
+            minSdkVersion    : 24,
+            targetSdkVersion : 30
+    ]
+
+    version = [
+            versionCode: 1,
+            versionName: "1.0"
+    ]
+
+    app_dependencies = [
+            appcompat       : 'androidx.appcompat:appcompat:1.1.0',
+            material        : 'com.google.android.material:material:1.1.0',
+            constraintlayout: 'androidx.constraintlayout:constraintlayout:1.1.3'
+    ]
+}
