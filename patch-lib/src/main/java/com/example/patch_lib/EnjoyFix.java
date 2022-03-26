@@ -58,6 +58,17 @@ public class EnjoyFix {
         return hackFile;
     }
 
+    /**
+     * 1、获取程序的PathClassLoader对象
+     * 2、反射获得PathClassLoader父类BaseDexClassLoader的pathList对象
+     * 3、反射获取pathList的dexElements对象 （oldElement）
+     * 4、把补丁包变成Element数组：patchElement（反射执行makePathElements）
+     * 5、合并patchElement+oldElement = newElement （Array.newInstance）
+     * 6、反射把oldElement赋值成newElement
+     *
+     * @param application
+     * @param patch
+     */
     public static void installPatch(Application application, File patch) {
         File hackFile = initHack(application);
         ClassLoader classLoader = application.getClassLoader();

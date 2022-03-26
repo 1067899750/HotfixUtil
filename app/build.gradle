@@ -1,10 +1,17 @@
 plugins {
     id 'com.android.application'
 }
+apply plugin: 'com.enjoy.patch'
+
 
 // 定义变量，同学们注意：可以定义变量，也可以不定义变量
 def app_android = this.getRootProject().ext.android
 def app_version = this.getRootProject().ext.version
+
+patch {
+    debugOn true
+    applicationName 'com.example.hotfixutil.MyApplication'
+}
 
 android {
     compileSdkVersion app_android.compileSdkVersion
@@ -18,6 +25,10 @@ android {
         versionName app_version.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk{
+            abiFilters 'armeabi-v7a'
+        }
     }
 
     buildTypes {
@@ -34,6 +45,7 @@ android {
             minifyEnabled true
             /*打开资源压缩*/
             shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
@@ -52,5 +64,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     
     implementation project(path: ':patch-lib')
-
+//    implementation project(path: ':patch-hack')
 }

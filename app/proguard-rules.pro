@@ -21,7 +21,7 @@
 #-renamesourcefileattribute SourceFile
 #保证使用同一套 mapping 文件，从而保证前后打包一直。
 #mapping文件时混淆前后文件的映射关系
--applymapping mapping.txt
+#-applymapping mapping.txt
 -keep class com.enjoy.patch.**{*;}
 -dontwarn android.support.**
 -ignorewarnings
